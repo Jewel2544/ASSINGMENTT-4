@@ -96,9 +96,9 @@ function renderinterview() {
     div.className = "py-4";
     div.innerHTML = `
             <div class="jobCard py-4 px-6 shadow-md mb-7">
-                <h2 class="${job.jobName} font-bold text-xl text-[#002C5C]">Mobile First Corp</h2>
-                <h2 class="${job.jobTitle} text-gray-500 mb-4">React Native Developer</h2>
-                <h3 class="${job.jobSalary} text-gray-500 mb-4">Remote • Full-time • $130,000 - $175,000</h3>
+                <h2 class="${job.jobname} font-bold text-xl text-[#002C5C]">Mobile First Corp</h2>
+                <h2 class="${job.jobtitle} text-gray-500 mb-4">React Native Developer</h2>
+                <h3 class="${job.jobsalary} text-gray-500 mb-4">Remote • Full-time • $130,000 - $175,000</h3>
 
                 <button class="status btn text-[#002C5C]">Not Applied</button>
                 <p class="${job.notes} text-[#323B49] mb-4">Build cross-platform mobile applications using React Native. Work on products used by millions of users worldwide.</p>
