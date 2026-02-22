@@ -13,6 +13,7 @@ const allCardSection = document.getElementById("allcardsection");
 
 const mainContainer = document.querySelector("main");
 const filterSection = document.getElementById("filterd-section");
+const filterSection2 = document.getElementById("filterd-section-2")
 
 function updateDashboard() {
   total.innerText = allCardSection.children.length;
@@ -43,9 +44,17 @@ function toggleStyle(id) {
     allCardSection.classList.remove('hidden');
     filterSection.classList.add('hidden')
   }
+  else if (id == 'rejected-filter-btn'){
+    filterSection.classList.add('hidden')
+    allCardSection.classList.add('hidden')
+    filterSection2.classList.remove('hidden')
+
+  }
 }
 
 mainContainer.addEventListener("click", function (event) {
+
+  // interview btn set
   if (event.target.classList.contains('interviewbtn')) {
     const parentNodes = event.target.parentNode;
     // console.log(parentNodes)
@@ -56,11 +65,11 @@ mainContainer.addEventListener("click", function (event) {
     const status = parentNodes.querySelector(".status").innerText;
     const notes = parentNodes.querySelector(".notes").innerText;
 
-    console.log(jobName,
-      jobSalary,
-      jobTitle,
-      status,
-      notes,)
+    // console.log(jobName,
+    //   jobSalary,
+    //   jobTitle,
+    //   status,
+    //   notes,)
 
     parentNodes.querySelector(".status").innerText = 'Interview'
 
@@ -84,6 +93,47 @@ mainContainer.addEventListener("click", function (event) {
     updateDashboard();
 
   }
+
+  // reject btn set
+
+  if (event.target.classList.contains('rejectbtn')) {
+    const parentNodes = event.target.parentNode;
+    // console.log(parentNodes)
+
+    const jobName = parentNodes.querySelector(".jobname").innerText;
+    const jobTitle = parentNodes.querySelector(".jobtitle").innerText;
+    const jobSalary = parentNodes.querySelector(".jobsalary").innerText;
+    const status = parentNodes.querySelector(".status").innerText;
+    const notes = parentNodes.querySelector(".notes").innerText;
+
+    // console.log(jobName,
+    //   jobSalary,
+    //   jobTitle,
+    //   status,
+    //   notes,)
+
+    parentNodes.querySelector(".status").innerText = 'Rejected'
+
+    const cardInfo = {
+      jobName,
+      jobSalary,
+      jobTitle,
+      status:"Rejected",
+      notes,
+    };
+
+    const jobExist = rejectedList.find(
+      (item) => item.jobName == cardInfo.jobName,
+    );
+    
+
+    if (!jobExist) {
+      rejectedList.push(cardInfo);
+    }
+    renderreject()
+    updateDashboard();
+
+  }
 });
 
 function renderinterview() {
@@ -97,8 +147,8 @@ function renderinterview() {
     div.innerHTML = `
             <div class="jobCard py-4 px-6 shadow-md mb-7">
                 <h2 class="${job.jobname} font-bold text-xl text-[#002C5C]">Mobile First Corp</h2>
-                <h2 class="${job.jobtitle} text-gray-500 mb-4">React Native Developer</h2>
-                <h3 class="${job.jobsalary} text-gray-500 mb-4">Remote • Full-time • $130,000 - $175,000</h3>
+                <h2 class="${job.jobTitle} text-gray-500 mb-4">React Native Developer</h2>
+                <h3 class="${job.jobSalary} text-gray-500 mb-4">Remote • Full-time • $130,000 - $175,000</h3>
 
                 <button class="status btn text-[#002C5C]">Not Applied</button>
                 <p class="${job.notes} text-[#323B49] mb-4">Build cross-platform mobile applications using React Native. Work on products used by millions of users worldwide.</p>
@@ -108,5 +158,34 @@ function renderinterview() {
         `;
 
         filterSection.appendChild(div);
+  }
+}
+
+
+// rejecte div
+
+
+function renderreject() {
+  filterSection2.innerHTML = "";
+
+  for (let job of rejectedList) {
+    // console.log(rejectedList);
+
+    const div = document.createElement("div");
+    div.className = "py-4";
+    div.innerHTML = `
+            <div class="jobCard py-4 px-6 shadow-md mb-7">
+                <h2 class="${job.jobName} font-bold text-xl text-[#002C5C]">Mobile First Corp</h2>
+                <h2 class="${job.jobTitle} text-gray-500 mb-4">React Native Developer</h2>
+                <h3 class="${job.jobSalary} text-gray-500 mb-4">Remote • Full-time • $130,000 - $175,000</h3>
+
+                <button class="status btn text-[#002C5C]">Not Applied</button>
+                <p class="${job.notes} text-[#323B49] mb-4">Build cross-platform mobile applications using React Native. Work on products used by millions of users worldwide.</p>
+                <button class="interviewbtn btn border-2 border-green-500 bg-transparent text-green-500">INTERVIEW</button>
+                <button class="rejectbtn btn border-2 border-red-600  bg-transparent text-red-500">REJECTED</button>
+          </div>
+        `;
+
+        filterSection2.appendChild(div);
   }
 }
