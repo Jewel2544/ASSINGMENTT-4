@@ -154,8 +154,6 @@ mainContainer.addEventListener("click", function (event) {
     renderinterview();
     renderreject();
     updateDashboard();
-    updatedashbord3();
-
 
   }
 
@@ -187,9 +185,8 @@ mainContainer.addEventListener("click", function (event) {
 
     renderinterview();
     renderreject();
-
-
     updateDashboard();
+    updateDashboard4();
   }
 
 });
