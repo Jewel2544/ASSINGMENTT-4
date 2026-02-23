@@ -84,43 +84,35 @@ function toggleStyle(id) {
 mainContainer.addEventListener("click", function (event) {
 
   // interview btn set
-  if (event.target.classList.contains('interviewbtn')) {
+ if (event.target.classList.contains('interviewbtn')) {
     const parentNodes = event.target.parentNode;
-    // console.log(parentNodes)
 
     const jobName = parentNodes.querySelector(".jobname").innerText;
     const jobTitle = parentNodes.querySelector(".jobtitle").innerText;
     const jobSalary = parentNodes.querySelector(".jobsalary").innerText;
-    const status = parentNodes.querySelector(".status").innerText;
     const notes = parentNodes.querySelector(".notes").innerText;
 
-    // console.log(jobName,
-    //   jobSalary,
-    //   jobTitle,
-    //   status,
-    //   notes,)
-
-    parentNodes.querySelector(".status").innerText = 'Interview'
+    parentNodes.querySelector(".status").innerText = 'Interview';
 
     const cardInfo = {
       jobName,
       jobSalary,
       jobTitle,
-      status:"interview",
+      status: "Interview",
       notes,
     };
 
-    const jobExist = interviewList.find(
-      (item) => item.jobName == cardInfo.jobName,
-    );
-    
+    rejectedList = rejectedList.filter(item => item.jobName !== jobName);
+
+    const jobExist = interviewList.find(item => item.jobName == jobName);
 
     if (!jobExist) {
       interviewList.push(cardInfo);
     }
-    renderinterview();
-    updateDashboard();
 
+    renderinterview();
+    renderreject();
+    updateDashboard();  
   }
 
   // reject btn set
@@ -151,55 +143,65 @@ mainContainer.addEventListener("click", function (event) {
       notes,
     };
 
-    const jobExist = rejectedList.find(
-      (item) => item.jobName == cardInfo.jobName,
-    );
-    
+    interviewList = interviewList.filter(item => item.jobName !== jobName);
 
+    const jobExist = rejectedList.find((item) => item.jobName == cardInfo.jobName, );
+    
     if (!jobExist) {
       rejectedList.push(cardInfo);
+
     }
-    renderreject()
+    renderinterview();
+    renderreject();
     updateDashboard();
+    updatedashbord3();
 
 
   }
 
+
   // delete card
 
-else if (event.target.closest('.delete-btn')) {
 
-  const card = event.target.closest('.jobCard');
-  const jobName = card.querySelector(".jobname").innerText;
+  else if (event.target.closest('.delete-btn')) {
 
-  const allCards = document.querySelectorAll("#allcardsection .jobCard");
+    const card = event.target.closest('.jobCard');
+    const jobName = card.querySelector(".jobname").innerText;
 
-  allCards.forEach(item => {
-    const name = item.querySelector(".jobname").innerText;
-    if (name === jobName) {
-      item.remove();
-    }
-  });
+    const allCards = document.querySelectorAll("#allcardsection .jobCard");
 
-  interviewList = interviewList.filter(item => item.jobName !== jobName);
+    allCards.forEach(item => {
+      const name = item.querySelector(".jobname").innerText;
+      if (name === jobName) {
+        item.remove();
+      }
+    });
 
-  rejectedList = rejectedList.filter(item => item.jobName !== jobName);
+    interviewList = interviewList.filter(item => item.jobName !== jobName);
 
-
-  card.remove();
+    rejectedList = rejectedList.filter(item => item.jobName !== jobName);
 
 
-  renderinterview();
-  renderreject();
+    card.remove();
 
 
-  updateDashboard();
-}
+    renderinterview();
+    renderreject();
+
+
+    updateDashboard();
+  }
 
 });
 
+
+// interviewList div
+
+
 function renderinterview() {
   filterSection.innerHTML = "";
+
+ 
 
   for (let job of interviewList) {
     // console.log(interviewList);
@@ -226,7 +228,7 @@ function renderinterview() {
 
 
 
-// rejecte div
+// rejected div
 
 
 function renderreject() {
@@ -248,7 +250,7 @@ function renderreject() {
                 <button class="interviewbtn btn border-2 border-green-500 bg-transparent text-green-500">INTERVIEW</button>
                 <button class="rejectbtn btn border-2 border-red-600  bg-transparent text-red-500">REJECTED</button>
 
-                <button  class=" delete-btnhover:cursor-pointer hover:bg-pink-300 hover:border-pink-300 bg-gray-200 border-6 border-gray-200 rounded-full absolute bottom-55 right-10"><img  src="./images/Trash.png" alt="" /></button>
+                <button  class=" delete-btn hover:cursor-pointer hover:bg-pink-300 hover:border-pink-300 bg-gray-200 border-6 border-gray-200 rounded-full absolute bottom-55 right-10"><img  src="./images/Trash.png" alt="" /></button>
           </div>
         `;
 
