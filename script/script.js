@@ -4,6 +4,8 @@ let rejectedList = [];
 let total = document.getElementById("total");
 let interview = document.getElementById("interview");
 let rejected = document.getElementById("rejected");
+let totalJob = document.getElementById("total-job")
+
 
 const allFilterBtn = document.getElementById("all-filter-btn");
 const interviewFilterBtn = document.getElementById("interview-filter-btn");
@@ -19,8 +21,26 @@ function updateDashboard() {
   total.innerText = allCardSection.children.length;
   interview.innerText = interviewList.length;
   rejected.innerText = rejectedList.length;
+ 
+  
 }
 updateDashboard();
+
+function updatedashbord2(){
+ 
+  totalJob.innerText = filterSection.children.length
+  
+
+}
+function updatedashbord3(){
+totalJob.innerText = filterSection2.children.length
+
+
+}
+function updateDashboard4(){
+  totalJob.innerText = allCardSection.children.length
+}
+
 
 function toggleStyle(id) {
   allFilterBtn.classList.remove("bg-blue-700");
@@ -37,17 +57,26 @@ function toggleStyle(id) {
   selected.classList.add("bg-blue-700");
   
   if(id == 'interview-filter-btn'){
-    filterSection.classList.remove('hidden')
-    allCardSection.classList.add('hidden')
+    filterSection.classList.remove('hidden');
+    allCardSection.classList.add('hidden');
+    filterSection2.classList.add('hidden');
+
+    updatedashbord2()
+
   }
   else if(id == 'all-filter-btn'){
     allCardSection.classList.remove('hidden');
-    filterSection.classList.add('hidden')
+    filterSection.classList.add('hidden');
+    filterSection2.classList.add('hidden');
+
+    updateDashboard4()
   }
   else if (id == 'rejected-filter-btn'){
-    filterSection.classList.add('hidden')
-    allCardSection.classList.add('hidden')
-    filterSection2.classList.remove('hidden')
+    filterSection.classList.add('hidden');
+    allCardSection.classList.add('hidden');
+    filterSection2.classList.remove('hidden');
+
+    updatedashbord3()
 
   }
 }
@@ -96,7 +125,7 @@ mainContainer.addEventListener("click", function (event) {
 
   // reject btn set
 
-  if (event.target.classList.contains('rejectbtn')) {
+  else if (event.target.classList.contains('rejectbtn')) {
     const parentNodes = event.target.parentNode;
     // console.log(parentNodes)
 
@@ -133,7 +162,40 @@ mainContainer.addEventListener("click", function (event) {
     renderreject()
     updateDashboard();
 
+
   }
+
+  // delete card
+
+else if (event.target.closest('.delete-btn')) {
+
+  const card = event.target.closest('.jobCard');
+  const jobName = card.querySelector(".jobname").innerText;
+
+  const allCards = document.querySelectorAll("#allcardsection .jobCard");
+
+  allCards.forEach(item => {
+    const name = item.querySelector(".jobname").innerText;
+    if (name === jobName) {
+      item.remove();
+    }
+  });
+
+  interviewList = interviewList.filter(item => item.jobName !== jobName);
+
+  rejectedList = rejectedList.filter(item => item.jobName !== jobName);
+
+
+  card.remove();
+
+
+  renderinterview();
+  renderreject();
+
+
+  updateDashboard();
+}
+
 });
 
 function renderinterview() {
@@ -145,21 +207,23 @@ function renderinterview() {
     const div = document.createElement("div");
     div.className = "py-4";
     div.innerHTML = `
-            <div class="jobCard py-4 px-6 shadow-md mb-7">
-                <h2 class="${job.jobname} font-bold text-xl text-[#002C5C]">Mobile First Corp</h2>
-                <h2 class="${job.jobTitle} text-gray-500 mb-4">React Native Developer</h2>
-                <h3 class="${job.jobSalary} text-gray-500 mb-4">Remote • Full-time • $130,000 - $175,000</h3>
+            <div class="jobCard py-4 px-6 shadow-md mb-7 relative">
+                <h2 class="jobname font-bold text-xl text-[#002C5C]">${job.jobName}</h2>
+                <h2 class=" text-gray-500 mb-4">${job.jobTitle}</h2>
+                <h3 class=" text-gray-500 mb-4">${job.jobSalary}</h3>
 
-                <button class="status btn text-[#002C5C]">Not Applied</button>
-                <p class="${job.notes} text-[#323B49] mb-4">Build cross-platform mobile applications using React Native. Work on products used by millions of users worldwide.</p>
+                <button class="px-10 py-3 status btn text-[#002C5C]">${job.status}</button>
+                <p class=" text-[#323B49] mb-4">${job.notes}</p>
                 <button class="interviewbtn btn border-2 border-green-500 bg-transparent text-green-500">INTERVIEW</button>
                 <button class="rejectbtn btn border-2 border-red-600  bg-transparent text-red-500">REJECTED</button>
+                <button  class=" delete-btn hover:cursor-pointer hover:bg-pink-300 hover:border-pink-300 bg-gray-200 border-6 border-gray-200 rounded-full absolute bottom-55 right-10"><img  src="./images/Trash.png" alt="" /></button>
           </div>
         `;
 
         filterSection.appendChild(div);
   }
 }
+
 
 
 // rejecte div
@@ -174,15 +238,17 @@ function renderreject() {
     const div = document.createElement("div");
     div.className = "py-4";
     div.innerHTML = `
-            <div class="jobCard py-4 px-6 shadow-md mb-7">
-                <h2 class="${job.jobName} font-bold text-xl text-[#002C5C]">Mobile First Corp</h2>
-                <h2 class="${job.jobTitle} text-gray-500 mb-4">React Native Developer</h2>
-                <h3 class="${job.jobSalary} text-gray-500 mb-4">Remote • Full-time • $130,000 - $175,000</h3>
+            <div class="jobCard py-4 px-6 shadow-md mb-7 relative">
+                <h2 class=" jobname font-bold text-xl text-[#002C5C]">${job.jobName}</h2>
+                <h2 class=" text-gray-500 mb-4">${job.jobTitle}</h2>
+                <h3 class=" text-gray-500 mb-4">${job.jobSalary}</h3>
 
-                <button class="status btn text-[#002C5C]">Not Applied</button>
-                <p class="${job.notes} text-[#323B49] mb-4">Build cross-platform mobile applications using React Native. Work on products used by millions of users worldwide.</p>
+                <button class="px-10 py-3 status btn text-[#002C5C]">${job.status}</button>
+                <p class=" text-[#323B49] mb-4">${job.notes}</p>
                 <button class="interviewbtn btn border-2 border-green-500 bg-transparent text-green-500">INTERVIEW</button>
                 <button class="rejectbtn btn border-2 border-red-600  bg-transparent text-red-500">REJECTED</button>
+
+                <button  class=" delete-btnhover:cursor-pointer hover:bg-pink-300 hover:border-pink-300 bg-gray-200 border-6 border-gray-200 rounded-full absolute bottom-55 right-10"><img  src="./images/Trash.png" alt="" /></button>
           </div>
         `;
 
